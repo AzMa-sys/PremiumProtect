@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="about-container" style="max-width: 1000px; margin: 0 auto;">
+    <!-- Герой-секция -->
+    <div class="hero-section" style="text-align: center; padding: 2rem 0 4rem 0;">
+        <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">О компании PremiumProtect</h1>
+        <p style="font-size: 1.2rem; color: #666; max-width: 600px; margin: 0 auto;">
+            Профессиональная тонировка и бронирование автомобилей с 2010 года
+        </p>
+    </div>
+
+    <!-- Наши услуги -->
+    <div class="card">
+        <h2 style="text-align: center; margin-bottom: 3rem;">Наши услуги</h2>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+            <!-- Тонировка -->
+            <div class="service-card" style="background: #f8f9fa; padding: 2rem; border-radius: 12px; text-align: center;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🌤️</div>
+                <h3 style="margin-bottom: 1rem;">Тонировка стекол</h3>
+                <p style="line-height: 1.6; color: #666;">
+                    Защита от ультрафиолета, снижение нагрева салона, 
+                    конфиденциальность и стильный внешний вид вашего автомобиля.
+                </p>
+                <ul style="text-align: left; margin-top: 1rem; color: #666;">
+                    <li>Атермальные пленки премиум-класса</li>
+                    <li>Пожизненная гарантия</li>
+                    <li>Сертифицированные материалы</li>
+                </ul>
+            </div>
+
+            <!-- Бронирование -->
+            <div class="service-card" style="background: #f8f9fa; padding: 2rem; border-radius: 12px; text-align: center;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🛡️</div>
+                <h3 style="margin-bottom: 1rem;">Бронирование пленкой</h3>
+                <p style="line-height: 1.6; color: #666;">
+                    Защита лакокрасочного покрытия от сколов, царапин, 
+                    химических воздействий и мелких повреждений.
+                </p>
+                <ul style="text-align: left; margin-top: 1rem; color: #666;">
+                    <li>Пленки 8H hardness</li>
+                    <li>Самовосстановление царапин</li>
+                    <li>Защита от химикатов</li>
+                </ul>
+            </div>
+
+            <!-- Комплекс -->
+            <div class="service-card" style="background: #f8f9fa; padding: 2rem; border-radius: 12px; text-align: center;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">⚡</div>
+                <h3 style="margin-bottom: 1rem;">Комплексные решения</h3>
+                <p style="line-height: 1.6; color: #666;">
+                    Полная защита автомобиля: тонировка + бронирование. 
+                    Максимальная сохранность и комфорт для вашего авто.
+                </p>
+                <ul style="text-align: left; margin-top: 1rem; color: #666;">
+                    <li>Индивидуальный подход</li>
+                    <li>Специальные условия</li>
+                    <li>Полный цикл работ</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Процесс работы -->
+    <div class="card">
+        <h2 style="text-align: center; margin-bottom: 3rem;">Как мы работаем</h2>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem;">
+            <div style="text-align: center;">
+                <div style="background: #000; color: #fff; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-weight: bold;">1</div>
+                <h4 style="margin-bottom: 0.5rem;">Консультация</h4>
+                <p style="color: #666; font-size: 0.9rem;">
+                    Подбор оптимального решения под ваш автомобиль и бюджет
+                </p>
+            </div>
+            
+            <div style="text-align: center;">
+                <div style="background: #000; color: #fff; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-weight: bold;">2</div>
+                <h4 style="margin-bottom: 0.5rem;">Расчет</h4>
+                <p style="color: #666; font-size: 0.9rem;">
+                    Точный расчет стоимости с помощью нашего калькулятора
+                </p>
+            </div>
+            
+            <div style="text-align: center;">
+                <div style="background: #000; color: #fff; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-weight: bold;">3</div>
+                <h4 style="margin-bottom: 0.5rem;">Выполнение</h4>
+                <p style="color: #666; font-size: 0.9rem;">
+                    Качественное выполнение работ в согласованные сроки
+                </p>
+            </div>
+            
+            <div style="text-align: center;">
+                <div style="background: #000; color: #fff; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-weight: bold;">4</div>
+                <h4 style="margin-bottom: 0.5rem;">Гарантия</h4>
+                <p style="color: #666; font-size: 0.9rem;">
+                    Предоставление гарантии и консультация по уходу
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Контакты -->
+    <div class="card">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;">
+            <div>
+                <h2 style="margin-bottom: 1.5rem;">Контакты</h2>
+                
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="margin-bottom: 0.5rem;">📞 Телефон</h4>
+                    <p style="color: #666; font-size: 1.1rem;"> {{ profile.name }} - {{ profile.phone }}</p>
+                </div>
+                
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="margin-bottom: 0.5rem;">✉️ Email</h4>
+                    <p style="color: #666; font-size: 1.1rem;">{{ profile.e_mail }}</p>
+                </div>
+                
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="margin-bottom: 0.5rem;">📍 Адрес</h4>
+                    <p style="color: #666; font-size: 1.1rem;">
+                        {{ profile.address }}
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 style="margin-bottom: 0.5rem;">🕒 Часы работы</h4>
+                    <p style="color: #666; font-size: 1.1rem;">
+                        {{ profile.time_w }}
+                    </p>
+                </div>
+            </div>
+            
+            <div style="background: #f8f9fa; padding: 2rem; border-radius: 12px;">
+                <h3 style="margin-bottom: 1rem;"></h3>
+                <form style="display: flex; flex-direction: column; gap: 1rem;">
+                    <div style="position:relative;overflow:hidden;"><a href="https://yandex.ru/maps/20173/nartkala/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:0px;">Нарткала</a><a href="https://yandex.ru/maps/20173/nartkala/house/ulitsa_shevlokova_159v/YEoYfgRjTE0FQFppfXl0dX1hYw==/?l=sat%2Cskl&ll=43.833733%2C43.554048&utm_medium=mapframe&utm_source=maps&z=19" style="color:#eee;font-size:12px;position:absolute;top:14px;">Улица Шевлокова, 159В — Яндекс Карты</a><iframe src="https://yandex.ru/map-widget/v1/?l=sat%2Cskl&ll=43.833733%2C43.554048&mode=whatshere&whatshere%5Bpoint%5D=43.833611%2C43.554109&whatshere%5Bzoom%5D=17&z=19" width="560" height="400" frameborder="1" allowfullscreen="true" style="position:relative;"></iframe></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+
+</style>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 style="margin-bottom: 2rem;">Мои заказы</h1>
+
+{% if orders %}
+    {% for order in orders %}
+    <div class="card">
+        <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 1rem;">
+            <h3>Заказ #{{ order.id }}</h3>
+            <span style="background-color: #f0f0f0; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.9rem;">
+                {{ order.get_status_display }}
+            </span>
+        </div>
+        <p><strong>Автомобиль:</strong> {{ order.car_brand }} {{ order.car_model }}</p>
+        <p><strong>Стоимость:</strong> {{ order.total_price }} руб.</p>
+        <p><strong>Дата создания:</strong> {{ order.created_at|date:"d.m.Y H:i" }}</p>
+        
+        <div style="margin-top: 1rem;">
+            <h4>Выбранные элементы:</h4>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;">
+                {% for element in order.selected_elements.all %}
+                <span style="background-color: #f5f5f5; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.9rem;">
+                    {{ element.name }}
+                </span>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <div class="card" style="text-align: center; padding: 3rem;">
+        <h3 style="margin-bottom: 1rem;">У вас пока нет заказов</h3>
+        <p style="color: #666; margin-bottom: 2rem;">Создайте ваш первый заказ на тонировку</p>
+        <a href="{% url 'order_create' %}" class="btn">Создать заказ</a>
+    </div>
+{% endif %}
+{% endblock %}

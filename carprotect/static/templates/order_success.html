@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="text-align: center; padding: 4rem 0;">
+    <div style="font-size: 4rem; margin-bottom: 2rem;">✅</div>
+    <h1 style="margin-bottom: 1rem;">Заказ успешно создан!</h1>
+    <p style="font-size: 1.2rem; color: #666; margin-bottom: 2rem;">
+        Ваш заказ #{{ order.id }} принят в обработку.
+    </p>
+    <div class="card" style="max-width: 400px; margin: 0 auto;">
+        <h3>Детали заказа</h3>
+        <p><strong>Автомобиль:</strong> {{ order.car_brand }} {{ order.car_model }}</p>
+        <p><strong>Общая стоимость:</strong> {{ order.total_price }} руб.</p>
+        <p><strong>Статус:</strong> {{ order.get_status_display }}</p>
+    </div>
+    <div style="margin-top: 2rem;">
+        <a href="{% url 'order_list' %}" class="btn">Мои заказы</a>
+        <a href="{% url 'order_create' %}" class="btn" style="background-color: #666; margin-left: 1rem;">Новый заказ</a>
+    </div>
+</div>
+{% endblock %}

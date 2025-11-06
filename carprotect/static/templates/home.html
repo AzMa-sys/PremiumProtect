@@ -1,0 +1,412 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="calculator-container" style="max-width: 1000px; margin: 0 auto;">
+    <div class="hero-section" style="text-align: center; padding: 2rem 0;">
+        <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">Калькулятор тонировки и бронирования</h1>
+        <p style="font-size: 1.1rem; color: #666;">Рассчитайте стоимость услуг для вашего автомобиля</p>
+    </div>
+
+    <div class="calculator-form">
+        <!-- Блок выбора автомобиля -->
+        <div class="card">
+            <h3 style="margin-bottom: 1.5rem;">Выбор автомобиля</h3>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label class="form-label">Марка автомобиля</label>
+                    <select id="car-brand" class="form-select">
+                        <option value="">Выберите марку</option>
+                        {% for brand in brands %}
+                        <option value="{{ brand.id }}">{{ brand.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Модель автомобиля</label>
+                    <select id="car-model" class="form-select">
+                        <option value="">Сначала выберите марку</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Блок с элементами (показывается динамически) -->
+        <div class="card" id="elements-section" style="display: none;">
+            <h3 style="margin-bottom: 1.5rem;">Выбор услуг</h3>
+            <p style="color: #666; margin-bottom: 1rem;">Отметьте нужные элементы для тонировки и/или бронирования</p>
+            
+            <div id="elements-grid">
+                <!-- Элементы будут загружаться здесь через JavaScript -->
+            </div>
+        </div>
+
+        <!-- Блок с результатами (показывается динамически) -->
+        <div class="card" id="results-section" style="display: none;">
+            <h3 style="margin-bottom: 1.5rem;">Результаты расчета</h3>
+            
+            <div id="elements-list">
+                <!-- Детализация расчета будет здесь -->
+            </div>
+            
+            <div style="border-top: 2px solid #000; padding-top: 1rem; margin-top: 1rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 1.2rem; font-weight: bold;">Итого:</span>
+                    <span id="total-price" style="font-size: 1.5rem; font-weight: bold; color: #000;">0 руб.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const brandSelect = document.getElementById('car-brand');
+        const modelSelect = document.getElementById('car-model');
+        const elementsSection = document.getElementById('elements-section');
+        const elementsGrid = document.getElementById('elements-grid');
+        const resultsSection = document.getElementById('results-section');
+        const elementsList = document.getElementById('elements-list');
+        const totalPriceElement = document.getElementById('total-price');
+
+        let currentPrices = {};
+        let selectedTintingElements = new Set();
+        let selectedArmorElements = new Set();
+
+        // Загрузка моделей при изменении марки
+        brandSelect.addEventListener('change', function() {
+            const brandId = this.value;
+            if (brandId) {
+                fetch(`/ajax/load-models/?brand_id=${brandId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        modelSelect.innerHTML = '<option value="">Выберите модель</option>';
+                        data.forEach(model => {
+                            modelSelect.innerHTML += `<option value="${model.id}">${model.name}</option>`;
+                        });
+                        hideSections();
+                    })
+                    .catch(error => {
+                        console.error('Error loading models:', error);
+                        hideSections();
+                    });
+            } else {
+                hideSections();
+            }
+        });
+
+        // Загрузка цен при изменении модели
+        function loadPrices() {
+            const carModelId = modelSelect.value;
+
+            if (carModelId) {
+                // Загружаем цены для обеих услуг сразу
+                fetch(`/ajax/load-all-prices/?car_model_id=${carModelId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        currentPrices = data;
+                        displayElements(data);
+                        elementsSection.style.display = 'block';
+                        updateCalculation();
+                    })
+                    .catch(error => {
+                        console.error('Error loading prices:', error);
+                        hideSections();
+                    });
+            } else {
+                hideSections();
+            }
+        }
+
+        modelSelect.addEventListener('change', loadPrices);
+
+        function displayElements(prices) {
+            elementsGrid.innerHTML = '';
+            selectedTintingElements.clear();
+            selectedArmorElements.clear();
+
+            if (Object.keys(prices).length === 0) {
+                elementsGrid.innerHTML = '<p style="color: #666; text-align: center; padding: 2rem;">Нет доступных элементов для выбранной модели</p>';
+                return;
+            }
+
+            // Создаем заголовок для тонировки
+            const tintingHeader = document.createElement('div');
+            tintingHeader.innerHTML = `
+                <div style="display: flex; align-items: center; margin: 1rem 0 1rem 0; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+                    <h4 style="margin: 0; flex-grow: 1; color: #333;">Тонировка стекол</h4>
+                    <label style="display: flex; align-items: center; cursor: pointer; font-weight: 500;">
+                        <input type="checkbox" id="select-all-tinting" style="margin-right: 0.5rem;">
+                        Выбрать все
+                    </label>
+                </div>
+            `;
+            elementsGrid.appendChild(tintingHeader);
+
+            // Элементы тонировки
+            Object.keys(prices).forEach(elementId => {
+                const element = prices[elementId];
+                if (element.tinting_price && element.tinting_price > 0) {
+                    const elementDiv = document.createElement('div');
+                    elementDiv.className = 'element-item';
+                    elementDiv.innerHTML = `
+                        <label style="display: flex; align-items: center; padding: 1rem; border: 1px solid #e0e0e0; border-radius: 8px; cursor: pointer; transition: all 0.3s; margin-bottom: 0.5rem;">
+                            <input type="checkbox" class="tinting-checkbox" value="${elementId}" 
+                                   style="margin-right: 0.75rem;">
+                            <div style="flex-grow: 1;">
+                                <div style="font-weight: 500; margin-bottom: 0.25rem;">${element.name}</div>
+                                <div style="color: #666; font-size: 0.9rem;">
+                                    ${element.tinting_price.toLocaleString('ru-RU')} руб.
+                                </div>
+                            </div>
+                        </label>
+                    `;
+                    elementsGrid.appendChild(elementDiv);
+                }
+            });
+
+            // Заголовок для бронирования
+            const armorHeader = document.createElement('div');
+            armorHeader.innerHTML = `
+                <div style="display: flex; align-items: center; margin: 2rem 0 1rem 0; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+                    <h4 style="margin: 0; flex-grow: 1; color: #333;">Бронирование</h4>
+                    <label style="display: flex; align-items: center; cursor: pointer; font-weight: 500;">
+                        <input type="checkbox" id="select-all-armor" style="margin-right: 0.5rem;">
+                        Выбрать все
+                    </label>
+                </div>
+            `;
+            elementsGrid.appendChild(armorHeader);
+
+            // Элементы бронирования
+            Object.keys(prices).forEach(elementId => {
+                const element = prices[elementId];
+                if (element.armor_price && element.armor_price > 0) {
+                    const elementDiv = document.createElement('div');
+                    elementDiv.className = 'element-item';
+                    elementDiv.innerHTML = `
+                        <label style="display: flex; align-items: center; padding: 1rem; border: 1px solid #e0e0e0; border-radius: 8px; cursor: pointer; transition: all 0.3s; margin-bottom: 0.5rem;">
+                            <input type="checkbox" class="armor-checkbox" value="${elementId}" 
+                                   style="margin-right: 0.75rem;">
+                            <div style="flex-grow: 1;">
+                                <div style="font-weight: 500; margin-bottom: 0.25rem;">${element.name}</div>
+                                <div style="color: #666; font-size: 0.9rem;">
+                                    ${element.armor_price.toLocaleString('ru-RU')} руб.
+                                </div>
+                            </div>
+                        </label>
+                    `;
+                    elementsGrid.appendChild(elementDiv);
+                }
+            });
+
+            // Добавляем обработчики для чекбоксов тонировки
+            document.querySelectorAll('.tinting-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        selectedTintingElements.add(this.value);
+                    } else {
+                        selectedTintingElements.delete(this.value);
+                    }
+                    updateSelectAllState();
+                    updateCalculation();
+                });
+            });
+
+            // Добавляем обработчики для чекбоксов бронирования
+            document.querySelectorAll('.armor-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        selectedArmorElements.add(this.value);
+                    } else {
+                        selectedArmorElements.delete(this.value);
+                    }
+                    updateSelectAllState();
+                    updateCalculation();
+                });
+            });
+
+            // Обработчики для "Выбрать все" тонировки
+            document.getElementById('select-all-tinting').addEventListener('change', function() {
+                const checkboxes = document.querySelectorAll('.tinting-checkbox');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                    if (this.checked) {
+                        selectedTintingElements.add(checkbox.value);
+                    } else {
+                        selectedTintingElements.delete(checkbox.value);
+                    }
+                });
+                updateCalculation();
+            });
+
+            // Обработчики для "Выбрать все" бронирования
+            document.getElementById('select-all-armor').addEventListener('change', function() {
+                const checkboxes = document.querySelectorAll('.armor-checkbox');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                    if (this.checked) {
+                        selectedArmorElements.add(checkbox.value);
+                    } else {
+                        selectedArmorElements.delete(checkbox.value);
+                    }
+                });
+                updateCalculation();
+            });
+
+            updateSelectAllState();
+        }
+
+        function updateSelectAllState() {
+            // Обновляем состояние "Выбрать все" для тонировки
+            const allTintingCheckboxes = document.querySelectorAll('.tinting-checkbox');
+            const allTintingChecked = allTintingCheckboxes.length > 0 && 
+                                    Array.from(allTintingCheckboxes).every(cb => cb.checked);
+            const selectAllTinting = document.getElementById('select-all-tinting');
+            if (selectAllTinting) {
+                selectAllTinting.checked = allTintingChecked;
+                selectAllTinting.disabled = allTintingCheckboxes.length === 0;
+            }
+
+            // Обновляем состояние "Выбрать все" для бронирования
+            const allArmorCheckboxes = document.querySelectorAll('.armor-checkbox');
+            const allArmorChecked = allArmorCheckboxes.length > 0 && 
+                                  Array.from(allArmorCheckboxes).every(cb => cb.checked);
+            const selectAllArmor = document.getElementById('select-all-armor');
+            if (selectAllArmor) {
+                selectAllArmor.checked = allArmorChecked;
+                selectAllArmor.disabled = allArmorCheckboxes.length === 0;
+            }
+        }
+
+        function updateCalculation() {
+            const carModelId = modelSelect.value;
+
+            if (carModelId && (selectedTintingElements.size > 0 || selectedArmorElements.size > 0)) {
+                fetch('/ajax/calculate-combined-total/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    body: JSON.stringify({
+                        car_model_id: carModelId,
+                        selected_tinting_elements: Array.from(selectedTintingElements),
+                        selected_armor_elements: Array.from(selectedArmorElements)
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error('Calculation error:', data.error);
+                        return;
+                    }
+                    displayResults(data);
+                    resultsSection.style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('Error calculating total:', error);
+                });
+            } else {
+                resultsSection.style.display = 'none';
+            }
+        }
+
+        function displayResults(data) {
+            elementsList.innerHTML = '';
+
+            let hasTinting = false;
+            let hasArmor = false;
+
+            // Тонировка
+            if (data.tinting_prices && data.tinting_prices.length > 0) {
+                hasTinting = true;
+                const tintingHeader = document.createElement('div');
+                tintingHeader.innerHTML = '<h4 style="margin: 0 0 0.5rem 0; color: #333;">Тонировка:</h4>';
+                elementsList.appendChild(tintingHeader);
+
+                data.tinting_prices.forEach(element => {
+                    const elementDiv = document.createElement('div');
+                    elementDiv.style.cssText = 'display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #f0f0f0;';
+                    elementDiv.innerHTML = `
+                        <span>${element.name}</span>
+                        <span>${element.price.toLocaleString('ru-RU')} руб.</span>
+                    `;
+                    elementsList.appendChild(elementDiv);
+                });
+
+                // Итог по тонировке
+                const tintingTotalDiv = document.createElement('div');
+                tintingTotalDiv.style.cssText = 'display: flex; justify-content: space-between; padding: 0.5rem 0; font-weight: 500;';
+                tintingTotalDiv.innerHTML = `
+                    <span>Итого по тонировке:</span>
+                    <span>${data.tinting_total.toLocaleString('ru-RU')} руб.</span>
+                `;
+                elementsList.appendChild(tintingTotalDiv);
+
+                // Разделитель
+                const spacer = document.createElement('div');
+                spacer.style.cssText = 'height: 1rem;';
+                elementsList.appendChild(spacer);
+            }
+
+            // Бронирование
+            if (data.armor_prices && data.armor_prices.length > 0) {
+                hasArmor = true;
+                const armorHeader = document.createElement('div');
+                armorHeader.innerHTML = '<h4 style="margin: 0 0 0.5rem 0; color: #333;">Бронирование:</h4>';
+                elementsList.appendChild(armorHeader);
+
+                data.armor_prices.forEach(element => {
+                    const elementDiv = document.createElement('div');
+                    elementDiv.style.cssText = 'display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #f0f0f0;';
+                    elementDiv.innerHTML = `
+                        <span>${element.name}</span>
+                        <span>${element.price.toLocaleString('ru-RU')} руб.</span>
+                    `;
+                    elementsList.appendChild(elementDiv);
+                });
+
+                // Итог по бронированию
+                const armorTotalDiv = document.createElement('div');
+                armorTotalDiv.style.cssText = 'display: flex; justify-content: space-between; padding: 0.5rem 0; font-weight: 500;';
+                armorTotalDiv.innerHTML = `
+                    <span>Итого по бронированию:</span>
+                    <span>${data.armor_total.toLocaleString('ru-RU')} руб.</span>
+                `;
+                elementsList.appendChild(armorTotalDiv);
+            }
+
+            // Общая итоговая цена
+            totalPriceElement.textContent = data.total_price.toLocaleString('ru-RU') + ' руб.';
+        }
+
+        function hideSections() {
+            elementsSection.style.display = 'none';
+            resultsSection.style.display = 'none';
+            selectedTintingElements.clear();
+            selectedArmorElements.clear();
+        }
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    });
+</script>
+
+{% endblock %}

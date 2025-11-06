@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}PremiumProtect - Тонировка и бронирование{% endblock %}</title>
+    <link type="text/css" href="{% static 'css/styles.css' %}" rel="stylesheet" />
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{% url 'home' %}" class="logo">PremiumProtect</a>
+            <ul class="nav-links">
+                    <li><a href="{% url 'about' %}">О нас</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 PremiumProtect. Все права защищены.</p>
+        </div>
+    </footer>
+
+    {% block scripts %}
+    {% endblock %}
+</body>
+</html>

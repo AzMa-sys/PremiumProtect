@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 0 auto;">
+    <h1 style="margin-bottom: 2rem;">Создание заказа</h1>
+    
+    <form method="post" id="order-form">
+        {% csrf_token %}
+        
+        <div class="card">
+            <h3 style="margin-bottom: 1.5rem;">Выбор автомобиля</h3>
+            
+            <div class="form-group">
+                <label class="form-label">Марка автомобиля</label>
+                {{ form.car_brand }}
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Модель автомобиля</label>
+                {{ form.car_model }}
+            </div>
+        </div>
+        
+        <div class="card">
+            <h3 style="margin-bottom: 1.5rem;">Выбор элементов для тонировки</h3>
+            
+            <div class="checkbox-group">
+                {% for element in elements %}
+                <label style="display: flex; align-items: center; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 8px;">
+                    <input type="checkbox" name="selected_elements" value="{{ element.id }}" class="element-checkbox"
+                           data-price="{{ services.0.price_per_element }}">
+                    {{ element.name }}
+                </label>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="card">
+            <h3 style="margin-bottom: 1.5rem;">Услуга</h3>
+            <select id="service-select" class="form-select">
+                {% for service in services %}
+                <option value="{{ service.id }}" data-price="{{ service.price_per_element }}">
+                    {{ service.name }} - {{ service.price_per_element }} руб./элемент
+                </option>
+                {% endfor %}
+            </select>
+            <p style="margin-top: 0.5rem; color: #666; font-size: 0.9rem;">{{ services.0.description }}</p>
+        </div>
+        
+        <div class="price-display">
+            <h3>Итоговая стоимость</h3>
+            <div class="total-price" id="total-price">0 руб.</div>
+            <div id="price-breakdown" style="margin-top: 0.5rem; color: #666;"></div>
+        </div>
+        
+        <button type="submit" class="btn" style="width: 100%; margin-top: 2rem; padding: 1rem;">Создать заказ</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const brandSelect = document.getElementById('car-brand');
+        const modelSelect = document.getElementById('car-model');
+        const checkboxes = document.querySelectorAll('.element-checkbox');
+        const serviceSelect = document.getElementById('service-select');
+        const totalPriceElement = document.getElementById('total-price');
+        const priceBreakdown = document.getElementById('price-breakdown');
+        
+        // Загрузка моделей при изменении марки
+        brandSelect.addEventListener('change', function() {
+            const brandId = this.value;
+            if (brandId) {
+                fetch(`/ajax/load-models/?brand_id=${brandId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        modelSelect.innerHTML = '<option value="">Сначала выберите марку</option>';
+                        data.forEach(model => {
+                            modelSelect.innerHTML += `<option value="${model.id}">${model.name}</option>`;
+                        });
+                    });
+            }
+        });
+        
+        // Расчет стоимости
+        function calculateTotal() {
+            const selectedElements = Array.from(checkboxes).filter(cb => cb.checked);
+            const serviceOption = serviceSelect.options[serviceSelect.selectedIndex];
+            const pricePerElement = parseFloat(serviceOption.dataset.price);
+            
+            const totalPrice = selectedElements.length * pricePerElement;
+            
+            totalPriceElement.textContent = totalPrice.toFixed(2) + ' руб.';
+            
+            // Детализация стоимости
+            if (selectedElements.length > 0) {
+                priceBreakdown.innerHTML = `
+                    ${selectedElements.length} элементов × ${pricePerElement.toFixed(2)} руб. = ${totalPrice.toFixed(2)} руб.
+                `;
+            } else {
+                priceBreakdown.innerHTML = 'Выберите элементы для тонировки';
+            }
+        }
+        
+        // Слушатели событий
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', calculateTotal);
+        });
+        
+        serviceSelect.addEventListener('change', calculateTotal);
+        
+        // Инициализация расчета
+        calculateTotal();
+    });
+</script>
+{% endblock %}
