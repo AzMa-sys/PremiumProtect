@@ -33,7 +33,7 @@ services:
     image: adminer
     container_name: adminer
     ports:
-      - '127.0.0.1:8080:8080'
+      - '90.156.225.144:8080:8080'
     links:
       - 'postgres:db'
     networks:
@@ -52,7 +52,7 @@ services:
     networks:
       - dbnet
     ports:
-      - '127.0.0.1:8000:8000'
+      - '90.156.225.144:8000:8000'
     volumes:
       - ./carprotect:/app/www/services
     depends_on:
