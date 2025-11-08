@@ -30,7 +30,7 @@ services:
     volumes:
       - ./carprotect:/app/www/services
     ports:
-      - '90.156.225.144:8000:8000'
+      - '8000:8000'
     depends_on:
       - postgres
 
@@ -38,7 +38,7 @@ services:
     image: adminer
     container_name: adminer
     ports:
-      - '90.156.225.144:8080:8080'
+      - '8080:8080'
     links:
       - 'postgres:db'
     networks:
