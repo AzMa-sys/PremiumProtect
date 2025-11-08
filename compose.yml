@@ -20,13 +20,11 @@ services:
   sitepremiump:
     build: ./carprotect
     image: site-premiump
-    container_name: django-sitepp
+    container_name: sitepremiump
     restart: always
     command: "gunicorn -c gunicorn.py carprotect.wsgi"
     env_file:
       - .env
-    links:
-      'postgres:dbps'
     networks:
       - dbnet
     volumes:
