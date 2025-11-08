@@ -25,6 +25,8 @@ services:
     command: "gunicorn -c gunicorn.py carprotect.wsgi"
     env_file:
       - .env
+    links:
+      - 'postgres:dbps'
     networks:
       - dbnet
     volumes:
