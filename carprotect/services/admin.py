@@ -14,9 +14,9 @@ class CarBrandAdmin(admin.ModelAdmin):
 
 @admin.register(CarModel)
 class CarModelAdmin(admin.ModelAdmin):
-    list_display = ['brand', 'name', 'tinting', 'protect']
+    list_display = ['brand', 'name']
     list_filter = ['brand']
-    search_fields = ['name', 'brand__name', 'tinting', 'protect']
+    search_fields = ['name', 'brand__name']
 
 @admin.register(CarElement)
 class CarElementAdmin(admin.ModelAdmin):

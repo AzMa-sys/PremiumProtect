@@ -16,8 +16,9 @@ class CarBrand(models.Model):
 class CarModel(models.Model):
     brand = models.ForeignKey(CarBrand, on_delete=models.CASCADE, verbose_name="Марка")
     name = models.CharField(max_length=100, verbose_name="Модель")
-    tinting = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="Полная тонировка")
-    protect = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="Полная бронь")
+    price_increase = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="Повышение цены")
+    # prot =  models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="id")
+
 
     def __str__(self):
         return f"{self.brand.name} {self.name}"

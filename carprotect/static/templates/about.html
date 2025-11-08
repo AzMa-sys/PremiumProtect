@@ -63,6 +63,7 @@
         </div>
     </div>
 
+    <hr>
     <!-- Процесс работы -->
     <div class="card">
         <h2 style="text-align: center; margin-bottom: 3rem;">Как мы работаем</h2>
@@ -102,9 +103,10 @@
         </div>
     </div>
 
+    <hr>
     <!-- Контакты -->
     <div class="card">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
             <div>
                 <h2 style="margin-bottom: 1.5rem;">Контакты</h2>
                 
@@ -118,13 +120,17 @@
                     <p style="color: #666; font-size: 1.1rem;">{{ profile.e_mail }}</p>
                 </div>
                 
+
+            </div>
+
+            <div style=" padding: 2rem; border-radius: 12px;">
                 <div style="margin-bottom: 2rem;">
                     <h4 style="margin-bottom: 0.5rem;">📍 Адрес</h4>
                     <p style="color: #666; font-size: 1.1rem;">
                         {{ profile.address }}
                     </p>
                 </div>
-                
+
                 <div>
                     <h4 style="margin-bottom: 0.5rem;">🕒 Часы работы</h4>
                     <p style="color: #666; font-size: 1.1rem;">
@@ -132,16 +138,17 @@
                     </p>
                 </div>
             </div>
-            
-            <div style="background: #f8f9fa; padding: 2rem; border-radius: 12px;">
-                <h3 style="margin-bottom: 1rem;"></h3>
-                <form style="display: flex; flex-direction: column; gap: 1rem;">
-                    <div style="position:relative;overflow:hidden;"><a href="https://yandex.ru/maps/20173/nartkala/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:0px;">Нарткала</a><a href="https://yandex.ru/maps/20173/nartkala/house/ulitsa_shevlokova_159v/YEoYfgRjTE0FQFppfXl0dX1hYw==/?l=sat%2Cskl&ll=43.833733%2C43.554048&utm_medium=mapframe&utm_source=maps&z=19" style="color:#eee;font-size:12px;position:absolute;top:14px;">Улица Шевлокова, 159В — Яндекс Карты</a><iframe src="https://yandex.ru/map-widget/v1/?l=sat%2Cskl&ll=43.833733%2C43.554048&mode=whatshere&whatshere%5Bpoint%5D=43.833611%2C43.554109&whatshere%5Bzoom%5D=17&z=19" width="560" height="400" frameborder="1" allowfullscreen="true" style="position:relative;"></iframe></div>
-                </form>
-            </div>
         </div>
     </div>
 </div>
+<form class="map-form">
+    <div class="map-container">
+        <div style="position:relative;overflow:hidden;">
+            <iframe src="https://yandex.ru/map-widget/v1/?l=sat%2Cskl&ll=43.833733%2C43.554048&mode=whatshere&whatshere%5Bpoint%5D=43.833611%2C43.554109&whatshere%5Bzoom%5D=17&z=19"
+                    frameborder="1" allowfullscreen="true" class="yandex-map"></iframe>
+        </div>
+    </div>
+</form>
 {% endblock %}
 
 {% block styles %}

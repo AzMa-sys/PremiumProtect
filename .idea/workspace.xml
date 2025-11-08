@@ -5,24 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4dbcd794-05ab-479c-b794-3b4a7d214bb4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/PremiumProtect.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/carprotect/services/forms.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/carprotect/services/management/commands/init_data.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/carprotect/services/migrations/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/carprotect/services/templatetags/form_tags.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/carprotect/services/urls.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/carprotect/static/base.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/carprotect/static/css/styles.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/carprotect/static/templates/about.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/carprotect/static/templates/calculation.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/carprotect/static/templates/home.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/carprotect/static/templates/order_create.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/carprotect/static/templates/order_list.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/carprotect/static/templates/order_success.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/carprotect/static/admin/base_site.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/carprotect/static/css/admin/admin.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carprotect/carprotect/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/carprotect/carprotect/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carprotect/carprotect/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/carprotect/carprotect/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carprotect/db.sqlite3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/carprotect/services/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/carprotect/services/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carprotect/services/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/carprotect/services/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carprotect/services/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/carprotect/services/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carprotect/services/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/carprotect/services/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carprotect/static/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/carprotect/static/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carprotect/static/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/carprotect/static/css/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carprotect/static/templates/about.html" beforeDir="false" afterPath="$PROJECT_DIR$/carprotect/static/templates/about.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carprotect/static/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/carprotect/static/templates/home.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,12 +43,18 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/AzMa-sys/PremiumProtect.git",
-    "accountId": "0762de08-4086-49f8-9d19-ce2c698f3dde"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;AzMa-sys&quot;
   }
-}]]></component>
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/AzMa-sys/PremiumProtect.git&quot;,
+    &quot;accountId&quot;: &quot;0762de08-4086-49f8-9d19-ce2c698f3dde&quot;
+  }
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
@@ -76,6 +80,8 @@
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="B:\PremiumProtect\carprotect\static" />
+      <recent name="B:\PremiumProtect\carprotect\static\templates" />
+      <recent name="B:\PremiumProtect\carprotect\static\img" />
     </key>
   </component>
   <component name="RunManager">

@@ -1,0 +1,66 @@
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx-server
+    restart: always
+    networks:
+      - dbnet
+    expose:
+      - 8088
+    ports:
+      - "80:8088"
+    volumes:
+      - ./carprotect/static:/app/www/static
+      - ./carprotect/media:/app/www/media
+      - ./carprotect/logs:/app/www/logs
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - sitepremiump
+
+  postgres:
+    image: postgres:17-alpine
+    container_name: psgr
+    environment:
+      - POSTGRES_USER=${DATABASE_USERNAME}
+      - POSTGRES_PASSWORD=%{DATABASE_PASSWORD}
+      - POSTGRES_DB=%{DATABASE_NAME}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - dbnet
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    ports:
+      - '127.0.0.1:8080:8080'
+    links:
+      - 'postgres:db'
+    networks:
+      - dbnet
+    depends_on:
+      - postgres
+
+  sitepremiump:
+    build: ./carprotect
+    image: site-premiump
+    container_name: django-sitepp
+    restart: always
+    command: "gunicorn -c gunicorn.py carprotect.wsgi"
+    env_file:
+      - .env
+    networks:
+      - dbnet
+    ports:
+      - '127.0.0.1:8000:8000'
+    volumes:
+      - ./carprotect:/app/www/services
+    depends_on:
+      - postgres
+
+networks:
+  dbnet:
+    driver: bridge
+
+volumes:
+  postgres-data:

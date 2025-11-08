@@ -1,0 +1,18 @@
+#header, .module caption, #changelist-filter h2 {
+    background: #000000;
+}
+
+div.breadcrumbs {
+    background: #111111;
+}
+
+.module table a, .module li a,  #changelist-filter.module details ul li a {
+    color: black
+}
+
+div.submit-row {
+    background: white
+}
+div.submit-row input.default, div.submit-row input {
+    background: black
+}
