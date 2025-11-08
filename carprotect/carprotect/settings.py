@@ -83,7 +83,7 @@ DATABASES = {
         'NAME': environ.get('DATABASE_NAME'),
         'USER': environ.get('DATABASE_USERNAME'),
         'PASSWORD': environ.get('DATABASE_PASSWORD'),
-        'HOST': environ.get('DATABASE_HOST'),
+        'HOST': 'postgres',
         'PORT': environ.get('DATABASE_PORT'),
     }
     # 'default': {
