@@ -5,8 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4dbcd794-05ab-479c-b794-3b4a7d214bb4" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carprotect/services/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/carprotect/services/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carprotect/services/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/carprotect/services/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carprotect/static/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/carprotect/static/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/carprotect/static/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/carprotect/static/templates/home.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

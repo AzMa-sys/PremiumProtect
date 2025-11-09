@@ -3,19 +3,19 @@
 {% load static %}
 
 {% block content %}
-<div class="calculator-container" style="max-width: 1000px; margin: 0 auto; padding: 1rem;">
-    <div class="hero-section" style="text-align: center; padding: 2rem 0;">
-        <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">Калькулятор тонировки и бронирования</h1>
-        <p style="font-size: 1.1rem; color: #666;">Рассчитайте стоимость услуг для вашего автомобиля</p>
+<div class="calculator-container" style="max-width:1000px;margin:0 auto;padding:1rem;">
+    <div class="hero-section" style="text-align:center;padding:2rem 0;">
+        <h1 style="font-size:2.5rem;margin-bottom:1rem;">Калькулятор тонировки и бронирования</h1>
+        <p style="font-size:1.1rem;color:#666;">Рассчитайте стоимость услуг для вашего автомобиля</p>
     </div>
 
     <div class="calculator-form">
         <!-- Выбор авто -->
-        <div class="card" style="background:#fff; border-radius:12px; padding:1.5rem; margin-bottom:1.5rem; box-shadow:0 2px 10px rgba(0,0,0,0.1);">
-            <h3 style="margin-bottom:1.5rem; color:#333; font-size:1.3rem;">Выбор автомобиля</h3>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
+        <div class="card" style="background:#fff;border-radius:12px;padding:1.5rem;margin-bottom:1.5rem;box-shadow:0 2px 10px rgba(0,0,0,0.1);">
+            <h3 style="margin-bottom:1.5rem;color:#333;font-size:1.3rem;">Выбор автомобиля</h3>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
                 <div>
-                    <label style="display:block; margin-bottom:0.5rem; font-weight:500; color:#333;">Марка</label>
+                    <label style="display:block;margin-bottom:0.5rem;font-weight:500;color:#333;">Марка</label>
                     <select id="car-brand" class="form-select">
                         <option value="">Выберите марку</option>
                         {% for brand in brands %}
@@ -24,7 +24,7 @@
                     </select>
                 </div>
                 <div>
-                    <label style="display:block; margin-bottom:0.5rem; font-weight:500; color:#333;">Модель</label>
+                    <label style="display:block;margin-bottom:0.5rem;font-weight:500;color:#333;">Модель</label>
                     <select id="car-model" class="form-select">
                         <option value="">Сначала выберите марку</option>
                     </select>
@@ -33,19 +33,19 @@
         </div>
 
         <!-- Элементы -->
-        <div class="card" id="elements-section" style="display:none; background:#fff; border-radius:12px; padding:1rem; margin-bottom:1.5rem; box-shadow:0 2px 10px rgba(0,0,0,0.1);">
-            <h3 style="margin-bottom:1rem; color:#333;">Выбор услуг</h3>
-            <p style="color:#666; margin-bottom:1.5rem;">Отметьте нужные элементы</p>
+        <div class="card" id="elements-section" style="display:none;background:#fff;border-radius:12px;padding:1rem;margin-bottom:1.5rem;box-shadow:0 2px 10px rgba(0,0,0,0.1);">
+            <h3 style="margin-bottom:1rem;color:#333;">Выбор услуг</h3>
+            <p style="color:#666;margin-bottom:1.5rem;">Отметьте нужные элементы</p>
             <div id="elements-grid"></div>
         </div>
 
         <!-- Результаты -->
-        <div class="card" id="results-section" style="display:none; background:#fff; border-radius:12px; padding:1rem; margin-bottom:1.5rem; box-shadow:0 2px 10px rgba(0,0,0,0.1);">
-            <h3 style="margin-bottom:1.5rem; color:#333;">Результаты</h3>
+        <div class="card" id="results-section" style="display:none;background:#fff;border-radius:12px;padding:1rem;margin-bottom:1.5rem;box-shadow:0 2px 10px rgba(0,0,0,0.1);">
+            <h3 style="margin-bottom:1.5rem;color:#333;">Результаты</h3>
             <div id="elements-list"></div>
-            <div style="border-top:2px solid #000; padding-top:1.5rem; margin-top:1.5rem; display:flex; justify-content:space-between;">
-                <span style="font-size:1.3rem; font-weight:bold;">Итого:</span>
-                <span id="total-price" style="font-size:1.8rem; font-weight:bold; color:#000;">0 руб.</span>
+            <div style="border-top:2px solid #000;padding-top:1.5rem;margin-top:1.5rem;display:flex;justify-content:space-between;">
+                <span style="font-size:1.3rem;font-weight:bold;">Итого:</span>
+                <span id="total-price" style="font-size:1.8rem;font-weight:bold;color:#000;">0 руб.</span>
             </div>
         </div>
     </div>
@@ -55,17 +55,17 @@
 {% block scripts %}
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const brand = document.getElementById('car-brand');
-        const model = document.getElementById('car-model');
-        const elsSec = document.getElementById('elements-section');
+        const brand   = document.getElementById('car-brand');
+        const model   = document.getElementById('car-model');
+        const elsSec  = document.getElementById('elements-section');
         const elsGrid = document.getElementById('elements-grid');
-        const resSec = document.getElementById('results-section');
+        const resSec  = document.getElementById('results-section');
         const resList = document.getElementById('elements-list');
         const totalEl = document.getElementById('total-price');
 
         let prices = {};
         const tinting = new Set();
-        const armor = new Set();
+        const armor   = new Set();
 
         const csrf = () => document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -76,6 +76,7 @@
             armor.clear();
         };
 
+        /* ------------------- Загрузка моделей ------------------- */
         brand.addEventListener('change', () => {
             const id = brand.value;
             model.innerHTML = '<option value="">Выберите модель</option>';
@@ -84,13 +85,11 @@
             fetch(`/ajax/load-models/?brand_id=${id}`)
                 .then(r => r.json())
                 .then(data => {
-                    data.forEach(m => {
-                        const opt = new Option(m.name, m.id);
-                        model.add(opt);
-                    });
+                    data.forEach(m => model.add(new Option(m.name, m.id)));
                 });
         });
 
+        /* ------------------- Загрузка цен ------------------- */
         model.addEventListener('change', () => {
             const id = model.value;
             hide();
@@ -104,130 +103,167 @@
                 });
         });
 
+        /* ------------------- Рендер элементов ------------------- */
         function renderElements() {
             elsGrid.innerHTML = '';
             tinting.clear();
             armor.clear();
 
             if (!Object.keys(prices).length) {
-                elsGrid.innerHTML = '<p style="text-align:center; color:#666; padding:2rem;">Нет данных</p>';
+                elsGrid.innerHTML = '<p style="text-align:center;color:#666;padding:2rem;">Нет данных</p>';
                 return;
             }
 
-            // Тонировка
-            let hasTint = false;
+            /* ---------- Тонировка ---------- */
             const tHeader = document.createElement('div');
-            tHeader.innerHTML = `<div style="display:flex; align-items:center; margin:1rem 0; padding:1rem; background:#f8f9fa; border-radius:8px;">
-                <h4 style="margin:0; flex:1;">Тонировка стекол</h4>
-                <label><input type="checkbox" id="all-tint"> Выбрать все</label>
-            </div>`;
+            tHeader.innerHTML = `
+                <div style="display:flex;align-items:center;margin:1rem 0;padding:1rem;background:#f8f9fa;border-radius:8px;">
+                    <h4 style="margin:0;flex:1;">Тонировка стекол</h4>
+                    <label style="cursor:pointer;">
+                        <input type="checkbox" id="all-tint" style="margin-right:0.5rem;">
+                        Выбрать все
+                    </label>
+                </div>`;
             elsGrid.appendChild(tHeader);
 
+            let hasTint = false;
             Object.keys(prices).forEach(id => {
                 const el = prices[id];
                 if (el.tinting_price > 0) {
                     hasTint = true;
                     const div = document.createElement('div');
-                    div.innerHTML = `<label style="display:flex; align-items:center; padding:1rem; border:1px solid #e0e0e0; border-radius:8px; margin-bottom:0.5rem; cursor:pointer;">
-                        <input type="checkbox" class="tint-cb" value="${id}" style="margin-right:0.75rem; transform:scale(1.2);">
-                        <div style="flex:1;">
-                            <div style="font-weight:500;">${el.name}</div>
-                            <div style="color:#666; font-size:0.9rem;">${el.tinting_price.toLocaleString('ru-RU')} руб.</div>
-                        </div>
-                    </label>`;
+                    div.innerHTML = `
+                        <label class="item-label" data-id="${id}" data-type="tint" style="display:flex;align-items:center;padding:1rem;border:1px solid #e0e0e0;border-radius:8px;margin-bottom:0.5rem;cursor:pointer;">
+                            <input type="checkbox" class="tint-cb" value="${id}" style="margin-right:0.75rem;transform:scale(1.2);">
+                            <div style="flex:1;">
+                                <div style="font-weight:500;">${el.name}</div>
+                                <div style="color:#666;font-size:0.9rem;">${el.tinting_price.toLocaleString('ru-RU')} руб.</div>
+                            </div>
+                        </label>`;
                     elsGrid.appendChild(div);
                 }
             });
             if (!hasTint) tHeader.style.display = 'none';
 
-            // Бронирование
-            let hasArmor = false;
+            /* ---------- Бронирование ---------- */
             const aHeader = document.createElement('div');
-            aHeader.innerHTML = `<div style="display:flex; align-items:center; margin:2rem 0 1rem; padding:1rem; background:#f8f9fa; border-radius:8px;">
-                <h4 style="margin:0; flex:1;">Бронирование</h4>
-                <label><input type="checkbox" id="all-armor"> Выбрать все</label>
-            </div>`;
+            aHeader.innerHTML = `
+                <div style="display:flex;align-items:center;margin:2rem 0 1rem;padding:1rem;background:#f8f9fa;border-radius:8px;">
+                    <h4 style="margin:0;flex:1;">Бронирование</h4>
+                    <label style="cursor:pointer;">
+                        <input type="checkbox" id="all-armor" style="margin-right:0.5rem;">
+                        Выбрать все
+                    </label>
+                </div>`;
             elsGrid.appendChild(aHeader);
 
+            let hasArmor = false;
             Object.keys(prices).forEach(id => {
                 const el = prices[id];
                 if (el.armor_price > 0) {
                     hasArmor = true;
                     const div = document.createElement('div');
-                    div.innerHTML = `<label style="display:flex; align-items:center; padding:1rem; border:1px solid #e0e0e0; border-radius:8px; margin-bottom:0.5rem; cursor:pointer;">
-                        <input type="checkbox" class="armor-cb" value="${id}" style="margin-right:0.75rem; transform:scale(1.2);">
-                        <div style="flex:1;">
-                            <div style="font-weight:500;">${el.name}</div>
-                            <div style="color:#666; font-size:0.9rem;">${el.armor_price.toLocaleString('ru-RU')} руб.</div>
-                        </div>
-                    </label>`;
+                    div.innerHTML = `
+                        <label class="item-label" data-id="${id}" data-type="armor" style="display:flex;align-items:center;padding:1rem;border:1px solid #e0e0e0;border-radius:8px;margin-bottom:0.5rem;cursor:pointer;">
+                            <input type="checkbox" class="armor-cb" value="${id}" style="margin-right:0.75rem;transform:scale(1.2);">
+                            <div style="flex:1;">
+                                <div style="font-weight:500;">${el.name}</div>
+                                <div style="color:#666;font-size:0.9rem;">${el.armor_price.toLocaleString('ru-RU')} руб.</div>
+                            </div>
+                        </label>`;
                     elsGrid.appendChild(div);
                 }
             });
             if (!hasArmor) aHeader.style.display = 'none';
 
-            // Обработчики
-            document.querySelectorAll('.tint-cb').forEach(cb => {
-                cb.addEventListener('change', function() {
-                    const label = this.closest('label');
-                    if (this.checked) {
-                        tinting.add(this.value);
-                        label.style.background = '#f0f8ff';
-                        label.style.borderColor = '#007bff';
-                    } else {
-                        tinting.delete(this.value);
-                        label.style.background = '#fff';
-                        label.style.borderColor = '#e0e0e0';
-                    }
-                    updateAll();
+            /* ------------------- Делегирование для отдельных чекбоксов ------------------- */
+            elsGrid.addEventListener('change', e => {
+                const cb = e.target;
+                if (!cb.matches('input.tint-cb, input.armor-cb')) return;
+
+                const label = cb.closest('.item-label');
+                const id = cb.value;
+                const isTint = cb.classList.contains('tint-cb');
+                const set = isTint ? tinting : armor;
+                const bg = isTint ? '#f0f8ff' : '#fff8f0';
+                const border = isTint ? '#007bff' : '#ff9800';
+
+                if (cb.checked) {
+                    set.add(id);
+                    label.style.background = bg;
+                    label.style.borderColor = border;
+                } else {
+                    set.delete(id);
+                    label.style.background = '#fff';
+                    label.style.borderColor = '#e0e0e0';
+                }
+
+                updateSelectAll();
+                calc();
+            });
+
+            /* ------------------- ВЫБРАТЬ ВСЕ — РАБОТАЕТ ПОЛНОСТЬЮ ------------------- */
+            const allTint = document.getElementById('all-tint');
+            const allArmor = document.getElementById('all-armor');
+
+            if (allTint) {
+                allTint.addEventListener('change', () => {
+                    const checkboxes = document.querySelectorAll('.tint-cb');
+                    checkboxes.forEach(cb => {
+                        const label = cb.closest('.item-label');
+                        const id = cb.value;
+
+                        cb.checked = allTint.checked;
+                        if (allTint.checked) {
+                            tinting.add(id);
+                            label.style.background = '#f0f8ff';
+                            label.style.borderColor = '#007bff';
+                        } else {
+                            tinting.delete(id);
+                            label.style.background = '#fff';
+                            label.style.borderColor = '#e0e0e0';
+                        }
+                    });
+                    updateSelectAll();
                     calc();
                 });
-            });
+            }
 
-            document.querySelectorAll('.armor-cb').forEach(cb => {
-                cb.addEventListener('change', function() {
-                    const label = this.closest('label');
-                    if (this.checked) {
-                        armor.add(this.value);
-                        label.style.background = '#fff8f0';
-                        label.style.borderColor = '#ff9800';
-                    } else {
-                        armor.delete(this.value);
-                        label.style.background = '#fff';
-                        label.style.borderColor = '#e0e0e0';
-                    }
-                    updateAll();
+            if (allArmor) {
+                allArmor.addEventListener('change', () => {
+                    const checkboxes = document.querySelectorAll('.armor-cb');
+                    checkboxes.forEach(cb => {
+                        const label = cb.closest('.item-label');
+                        const id = cb.value;
+
+                        cb.checked = allArmor.checked;
+                        if (allArmor.checked) {
+                            armor.add(id);
+                            label.style.background = '#fff8f0';
+                            label.style.borderColor = '#ff9800';
+                        } else {
+                            armor.delete(id);
+                            label.style.background = '#fff';
+                            label.style.borderColor = '#e0e0e0';
+                        }
+                    });
+                    updateSelectAll();
                     calc();
                 });
-            });
+            }
 
-            document.getElementById('all-tint')?.addEventListener('change', function() {
-                document.querySelectorAll('.tint-cb').forEach(cb => {
-                    cb.checked = this.checked;
-                    cb.dispatchEvent(new Event('change'));
-                });
-            });
-
-            document.getElementById('all-armor')?.addEventListener('change', function() {
-                document.querySelectorAll('.armor-cb').forEach(cb => {
-                    cb.checked = this.checked;
-                    cb.dispatchEvent(new Event('change'));
-                });
-            });
-
-            updateAll();
+            updateSelectAll();
         }
 
-        function updateAll() {
+        /* ------------------- Вспомогательные функции ------------------- */
+        function updateSelectAll() {
             const allT = document.querySelectorAll('.tint-cb');
-            const checkedT = [...allT].every(cb => cb.checked);
             const selT = document.getElementById('all-tint');
-            if (selT) selT.checked = checkedT && allT.length > 0;
+            if (selT) selT.checked = allT.length && [...allT].every(cb => cb.checked);
 
             const allA = document.querySelectorAll('.armor-cb');
-            const checkedA = [...allA].every(cb => cb.checked);
             const selA = document.getElementById('all-armor');
-            if (selA) selA.checked = checkedA && allA.length > 0;
+            if (selA) selA.checked = allA.length && [...allA].every(cb => cb.checked);
         }
 
         function calc() {
@@ -261,64 +297,36 @@
 
         function renderResult(d) {
             resList.innerHTML = '';
-            let has = false;
-
             if (d.tinting_prices?.length) {
-                has = true;
-                resList.appendChild(createHeader('Тонировка:'));
-                d.tinting_prices.forEach(el => resList.appendChild(createItem(el.name, el.price)));
-                resList.appendChild(createTotal('Итого по тонировке:', d.tinting_total, '#007bff'));
-                if (d.armor_prices?.length) resList.appendChild(createSpacer());
+                resList.appendChild(header('Тонировка:'));
+                d.tinting_prices.forEach(i => resList.appendChild(item(i.name, i.price)));
+                resList.appendChild(total('Итого по тонировке:', d.tinting_total, '#007bff'));
+                if (d.armor_prices?.length) resList.appendChild(spacer());
             }
-
             if (d.armor_prices?.length) {
-                has = true;
-                resList.appendChild(createHeader('Бронирование:'));
-                d.armor_prices.forEach(el => resList.appendChild(createItem(el.name, el.price)));
-                resList.appendChild(createTotal('Итого по бронированию:', d.armor_total, '#ff9800'));
+                resList.appendChild(header('Бронирование:'));
+                d.armor_prices.forEach(i => resList.appendChild(item(i.name, i.price)));
+                resList.appendChild(total('Итого по бронированию:', d.armor_total, '#ff9800'));
             }
-
             totalEl.textContent = d.total_price.toLocaleString('ru-RU') + ' руб.';
         }
 
-        function createHeader(text) {
-            const h = document.createElement('h4');
-            h.textContent = text;
-            h.style.cssText = 'margin:0 0 1rem; color:#333;';
-            return h;
-        }
-
-        function createItem(name, price) {
-            const div = document.createElement('div');
-            div.style.cssText = 'display:flex; justify-content:space-between; padding:0.75rem 0; border-bottom:1px solid #f0f0f0;';
-            div.innerHTML = `<span>${name}</span><span style="font-weight:500;">${price.toLocaleString('ru-RU')} руб.</span>`;
-            return div;
-        }
-
-        function createTotal(text, sum, color) {
-            const div = document.createElement('div');
-            div.style.cssText = 'display:flex; justify-content:space-between; padding:1rem 0; background:#f8f9fa; margin:0.5rem 0; border-radius:8px; font-weight:600;';
-            div.innerHTML = `<span>${text}</span><span style="color:${color};">${sum.toLocaleString('ru-RU')} руб.</span>`;
-            return div;
-        }
-
-        function createSpacer() {
-            const div = document.createElement('div');
-            div.style.height = '1.5rem';
-            return div;
-        }
+        const header = txt => { const h = document.createElement('h4'); h.textContent = txt; h.style.cssText = 'margin:0 0 1rem;color:#333;'; return h; };
+        const item = (name, price) => { const div = document.createElement('div'); div.style.cssText = 'display:flex;justify-content:space-between;padding:0.75rem 0;border-bottom:1px solid #f0f0f0;'; div.innerHTML = `<span>${name}</span><span style="font-weight:500;">${price.toLocaleString('ru-RU')} руб.</span>`; return div; };
+        const total = (txt, sum, color) => { const div = document.createElement('div'); div.style.cssText = 'display:flex;justify-content:space-between;padding:1rem 0;background:#f8f9fa;margin:0.5rem 0;border-radius:8px;font-weight:600;'; div.innerHTML = `<span>${txt}</span><span style="color:${color};">${sum.toLocaleString('ru-RU')} руб.</span>`; return div; };
+        const spacer = () => { const div = document.createElement('div'); div.style.height = '1.5rem'; return div; };
     });
 </script>
 
 <style>
-    .form-select {
-        width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; background: #fff;
+    .form-select{
+        width:100%;padding:0.75rem;border:1px solid #ddd;border-radius:8px;font-size:1rem;background:#fff;
     }
-    .form-select:focus {
-        outline: none; border-color: #007bff; box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+    .form-select:focus{
+        outline:none;border-color:#007bff;box-shadow:0 0 0 2px rgba(0,123,255,.25);
     }
-    @media (max-width: 768px) {
-        [style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+    @media (max-width:768px){
+        [style*="grid-template-columns"]{grid-template-columns:1fr !important;}
     }
 </style>
 {% endblock %}
