@@ -1,26 +1,30 @@
+<!-- templates/base.html -->
 {% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
     <title>{% block title %}PremiumProtect - Тонировка и бронирование{% endblock %}</title>
-    <link type="text/css" href="{% static 'css/styles.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <a href="{% url 'home' %}" class="logo"><img  src="{% static 'images/Logo1.png' %}"  width="90" height="30"/>PremiumProtect</a>
+            <a href="{% url 'home' %}" class="logo">
+                <img src="{% static 'images/Logo1.png' %}" width="90" height="30" alt="Logo">
+                PremiumProtect
+            </a>
             <ul class="nav-links">
-                    <li><a href="{% url 'about' %}">О нас</a></li>
+                <li><a href="{% url 'about' %}">О нас</a></li>
             </ul>
         </div>
     </nav>
 
     <main class="main-content">
         <div class="container">
-            {% block content %}
-            {% endblock %}
+            {% block content %}{% endblock %}
         </div>
     </main>
 
@@ -30,7 +34,6 @@
         </div>
     </footer>
 
-    {% block scripts %}
-    {% endblock %}
+    {% block scripts %}{% endblock %}
 </body>
 </html>

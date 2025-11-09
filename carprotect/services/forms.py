@@ -1,5 +1,5 @@
+# services/forms.py
 from django import forms
-
 from .models import CarBrand, CarModel
 
 
@@ -24,3 +24,9 @@ class CalculatorForm(forms.Form):
         ],
         widget=forms.Select(attrs={'class': 'form-select', 'id': 'service-type'})
     )
+
+    def __init__(self, *args, **kwargs):
+        brand_id = kwargs.pop('brand_id', None)
+        super().__init__(*args, **kwargs)
+        if brand_id:
+            self.fields['car_model'].queryset = CarModel.objects.filter(brand_id=brand_id)

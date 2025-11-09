@@ -25,8 +25,6 @@ services:
     command: "gunicorn -c gunicorn.py carprotect.wsgi"
     env_file:
       - .env
-    links:
-      - 'postgres:dbps'
     networks:
       - dbnet
     volumes:
@@ -53,10 +51,12 @@ services:
     container_name: psgr
     volumes:
       - postgres-data:/var/lib/postgresql/data
+    env_file:
+      - .env
     environment:
-      - POSTGRES_DB=${DATABASE_NAME}
-      - POSTGRES_USER=${DATABASE_USERNAME}
-      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_DB=premiumprotect
+      - POSTGRES_USER=eldar
+      - POSTGRES_PASSWORD=1234
     networks:
       - dbnet
 
